@@ -129,7 +129,7 @@ class Monster
             if (jmeno == "skeleton")
             {
                 characterhrac.aktualniZivoty -= 7;
-                characterhrac.poisonTurns = 3;
+            characterhrac.poisonTurns += 3;
                 
 
             }
@@ -139,17 +139,23 @@ class Monster
 		
 };
 
+
 void KonecHry()
 {
 	cout << "Konec hry" << endl;
 	exit(0);
 }
+// Declare the characterhrac variable in the main function scope to fix the undefined identifier error.
+
 
 
 int main()
 {
 	
+   
+
     int kolo;
+	int vyberutoku;
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> distrib(1, 3);
@@ -191,6 +197,8 @@ int main()
     Character characterhrac(jmeno, vyberclass);
 
 	cout  << " je " << characterhrac.maxZivoty << " zivotu a " << characterhrac.maxMana << " many" << endl;
+
+
     Monster setkani1(random= distrib(gen));
 
 	setkani1.attack(characterhrac);
@@ -210,9 +218,20 @@ int main()
         {
 			KonecHry();
 		}
+		cout << "vyber si utok\n";
+        cin >> vyberutoku;
+
+        switch (vyberutoku)
+        {
+        case 1:
+			characterhrac.zakladniutok(setkani1);
 			
+			setkani1.attack(characterhrac);
+			break;
+        default:
+            break;
 		}
-    //cin >> utok;
+
 
 
         if (characterhrac.aktualniZivoty <= 0)
