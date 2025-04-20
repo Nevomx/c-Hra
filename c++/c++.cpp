@@ -1,160 +1,26 @@
 ﻿// c++.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
 #include <iostream>
 #include <string>  
 #include <random>
 using namespace std; 
-
-class Character {
-    public:
-        string jmeno;
-        int maxZivoty;
-        int aktualniZivoty;
-        int maxMana;
-        int aktualniMana;
-        int zlato;
-        int level;
-        int zkusenosti;
-        int utok;
-		int Schopnost;
-        int poisonTurns = 0;  // kolik kol je otrávený
-
-
-        
-        Character(string jmeno, int vyberclass)
-        {
-            jmeno = jmeno;
-            switch (vyberclass)
-
-            {
-            case 1:
-				maxZivoty = 300;
-				aktualniZivoty = 100;
-				maxMana = 150;
-				aktualniMana = 50;
-				zlato = 0;
-				level = 1;
-				zkusenosti = 0;
-				utok = 10;
-                Schopnost = 3;
-				break;
-            case 2:
-                maxZivoty = 100;
-                aktualniZivoty = 100;
-                maxMana = 50;
-                aktualniMana = 50;
-                zlato = 0;
-                level = 1;
-                zkusenosti = 0;
-                utok = 10;
-				Schopnost = 3;
-                break;
-			case 3:
-                maxZivoty = 100;
-                aktualniZivoty = 100;
-                maxMana = 50;
-                aktualniMana = 50;
-                zlato = 0;
-                level = 1;
-                zkusenosti = 0;
-                utok = 10;
-				Schopnost = 3;
-				break;
-            case 4:
-                maxZivoty = 100;
-                aktualniZivoty = 100;
-                maxMana = 50;
-                aktualniMana = 50;
-                zlato = 0;
-                level = 1;
-                zkusenosti = 0;
-                utok = 10;
-                Schopnost = 3;
-            default:
-                break;
-            }
-
-        }
-};
-class Monster
-{
-    public:
-        int maxZivoty;
-        int aktualniZivoty;
-        int utok;
-		string jmeno;
-        
-        Monster(int monster)
-        {
-			
-            switch (monster)
-            {
-                case 1:
-				    jmeno = "zombie";
-                    maxZivoty = 100;
-                    aktualniZivoty = 100;
-                    utok = 10;
-                    break;
-            
-                case 2:
-				    jmeno = "skeleton";
-				    maxZivoty = 100;
-                    aktualniZivoty = 10;
-				    utok = 10;
-                    break;
-			    case 3:
-				    jmeno = "chicken jockey";
-				    maxZivoty = 10;
-				    aktualniZivoty = 100;
-				    utok = 15;
-				    break;
-                
-
-
-
-                
-            }
-
-        }
-
-        void attack(Character characterhrac)
-        {
-            cout << "Monster " << jmeno << " zaútočil na " << characterhrac.jmeno << " a způsobil mu " << utok << " poškození!" << endl;
-            characterhrac.aktualniZivoty -= utok;
-            cout << characterhrac.jmeno << " má teď " << characterhrac.aktualniZivoty << " životů." << endl;
-        }
-        void poisonarrow(Character characterhrac, int kolo)
-        {
-            if (jmeno == "skeleton")
-            {
-                characterhrac.aktualniZivoty -= 7;
-            characterhrac.poisonTurns += 3;
-                
-
-            }
-            else
-                cout << "nefunguje ty curaku";
-        }
-		
-};
-
-
+#include "Character.h"
+#include "Monster.h"
 void KonecHry()
 {
 	cout << "Konec hry" << endl;
 	exit(0);
 }
-// Declare the characterhrac variable in the main function scope to fix the undefined identifier error.
+
 
 
 
 int main()
 {
-	
+  
    
 
-    int kolo;
+    
 	int vyberutoku;
     random_device rd;
     mt19937 gen(rd());
@@ -219,18 +85,35 @@ int main()
 			KonecHry();
 		}
 		cout << "vyber si utok\n";
+		cout << "1. Zakladni utok\n";
+		cout << "2. Kriticky utok\n";
+
+
+        
         cin >> vyberutoku;
 
         switch (vyberutoku)
         {
         case 1:
-			characterhrac.zakladniutok(setkani1);
-			
-			setkani1.attack(characterhrac);
-			break;
-        default:
+            characterhrac.zakladniutok(setkani1);
+
+            setkani1.attack(characterhrac);
             break;
-		}
+        case 2:
+			characterhrac.critical(setkani1);
+
+            break;
+        case 3:
+
+            break;
+       
+            default:
+                cout << "neplatny utok" << endl;
+                break; 
+            
+        }
+		cout << "Monster " << setkani1.jmeno << " má teď " << setkani1.aktualniZivoty << " životů." << endl;
+        
 
 
 
@@ -239,12 +122,12 @@ int main()
             KonecHry();
         }
 
+		
 
 
-
-        kolo++;
-
+       
     }
+}
     
 
     
