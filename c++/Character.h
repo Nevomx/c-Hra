@@ -23,4 +23,5 @@ public:
     Character(string jmeno, int vyberclass);
     void zakladniutok(Monster& monster);
 	void critical(Monster& monster);
+	void zobrazStav();
 };
