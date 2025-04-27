@@ -1,16 +1,42 @@
 ﻿// c++.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include <iostream>
-#include <string>  
 #include <random>
+#include <string>  
 using namespace std; 
 #include "Character.h"
 #include "Monster.h"
-void KonecHry()
+using std::cin;
+using std::cout;
+using std::endl;
+
+
+
+
+void checkpoison(Character& characterhrac)
 {
-	cout << "Konec hry" << endl;
-	exit(0);
+	if (characterhrac.poisonTurns > 0)
+	{
+		characterhrac.aktualniZivoty -= 3;
+		characterhrac.poisonTurns--;
+		cout << "Hráč je otrávený! Ztrácí 3 HP. Zbývá " << characterhrac.poisonTurns << " kol otravy.\n";
+	}
+	if (characterhrac.aktualniZivoty <= 0)
+	{
+		characterhrac.KonecHry();
+	}
 }
+void porazenimonstra(Monster& setkani1, Character& characterhrac)
+{
+	cout << "Monster " << setkani1.jmeno << " byl poražen!" << endl;
+	setkani1.aktualniZivoty = 0;
+	cout << "Získal jsi 10 zlata a 10xp" << endl;
+	characterhrac.zlato += 10;
+	characterhrac.zkusenosti += 10;
+}
+
+
+
 
 
 
@@ -18,10 +44,10 @@ void KonecHry()
 int main()
 {
   
-   
+	string jmeno;
 
-    
-	int vyberutoku;
+	
+
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> distrib(1, 3);
@@ -30,10 +56,10 @@ int main()
     setlocale(LC_ALL, "");
 	int potvrzeni = 1,
 		vyberclass, potvrzeniclass = 1;
-	string jmeno;
+	
     
 
-    cout << "vytej v me hre\n";
+    cout << "vitej v me hre\n";
 	cout << "Zadej jmeno: ";
 	cin >> jmeno;
     
@@ -62,73 +88,66 @@ int main()
 
     Character characterhrac(jmeno, vyberclass);
 
-	cout  << " je " << characterhrac.maxZivoty << " zivotu a " << characterhrac.maxMana << " many" << endl;
+
+	cout  << " je " << characterhrac.maxZivoty << " zivotu a " << characterhrac.maxMana <<  " many" << endl;
 
 
-    Monster setkani1(random= distrib(gen));
 
-	setkani1.attack(characterhrac);
+Monster setkani1(random= distrib(gen));
+	cout << "Potkal jsi " << setkani1.jmeno << endl;
+	cout << "ma " << setkani1.maxZivoty << " zivotu a " << setkani1.utok << " utok" << endl;
 
     //encounter
     while (true)
     {
+		checkpoison(characterhrac);
+
+		characterhrac.provestah(setkani1);
+
+        setkani1.attack(characterhrac);
+
+        characterhrac.KonecHry();
         
-
-        if (characterhrac.poisonTurns > 0) 
-		{
-            characterhrac.aktualniZivoty -= 3;
-            characterhrac.poisonTurns--;
-            cout << "Hráč je otrávený! Ztrácí 3 HP. Zbývá " << characterhrac.poisonTurns << " kol otravy.\n";
-        }
-		if (characterhrac.aktualniZivoty <= 0)
-        {
-			KonecHry();
-		}
-		cout << "vyber si utok\n";
-		cout << "1. Zakladni utok\n";
-		cout << "2. Kriticky utok\n";
-
-
-        
-        cin >> vyberutoku;
-
-        switch (vyberutoku)
-        {
-        case 1:
-            characterhrac.zakladniutok(setkani1);
-
-            setkani1.attack(characterhrac);
-            break;
-        case 2:
-			characterhrac.critical(setkani1);
-
-            break;
-        case 3:
-
-            break;
-       
-            default:
-                cout << "neplatny utok" << endl;
-                break; 
-            
-        }
-		cout << "Monster " << setkani1.jmeno << " má teď " << setkani1.aktualniZivoty << " životů." << endl;
-        
-
-
-
-        if (characterhrac.aktualniZivoty <= 0)
-        {
-            KonecHry();
-        }
 
 		
-
-
+		porazenimonstra(setkani1, characterhrac);
+        
        
+
     }
-}
+
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+   
 
     
 

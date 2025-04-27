@@ -24,4 +24,9 @@ public:
     void zakladniutok(Monster& monster);
 	void critical(Monster& monster);
 	void zobrazStav();
+	void hodsekerou();
+	void provestah(Monster& monster);
+    void checkpoison();
+    void KonecHry();
+	
 };

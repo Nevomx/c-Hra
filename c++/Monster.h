@@ -17,4 +17,5 @@ public:
 
     void attack(Character& characterhrac);
     void poisonarrow(Character& characterhrac, int kolo);
+    
 };
