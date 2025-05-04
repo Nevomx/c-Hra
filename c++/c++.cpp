@@ -13,26 +13,17 @@ using std::endl;
 
 
 
-void checkpoison(Character& characterhrac)
-{
-	if (characterhrac.poisonTurns > 0)
-	{
-		characterhrac.aktualniZivoty -= 3;
-		characterhrac.poisonTurns--;
-		cout << "Hráč je otrávený! Ztrácí 3 HP. Zbývá " << characterhrac.poisonTurns << " kol otravy.\n";
-	}
-	if (characterhrac.aktualniZivoty <= 0)
-	{
-		characterhrac.KonecHry();
-	}
-}
+
 void porazenimonstra(Monster& setkani1, Character& characterhrac)
 {
-	cout << "Monster " << setkani1.jmeno << " byl poražen!" << endl;
-	setkani1.aktualniZivoty = 0;
-	cout << "Získal jsi 10 zlata a 10xp" << endl;
-	characterhrac.zlato += 10;
-	characterhrac.zkusenosti += 10;
+	if (setkani1.aktualniZivoty <= 0)
+	{
+		cout << "Monster " << setkani1.jmeno << " byl poražen!" << endl;
+		setkani1.aktualniZivoty = 0;
+		cout << "Získal jsi 10 zlata a 10xp" << endl;
+		characterhrac.zlato += 10;
+		characterhrac.zkusenosti += 10;
+	}
 }
 
 
@@ -98,19 +89,22 @@ Monster setkani1(random= distrib(gen));
 	cout << "ma " << setkani1.maxZivoty << " zivotu a " << setkani1.utok << " utok" << endl;
 
     //encounter
-    while (true)
-    {
-		checkpoison(characterhrac);
+	while (true)
+	{
+		characterhrac.checkpoison();
 
 		characterhrac.provestah(setkani1);
 
-        setkani1.attack(characterhrac);
+		setkani1.attack(characterhrac);
 
-        characterhrac.KonecHry();
-        
+		characterhrac.KonecHry();
 
-		
+
+
 		porazenimonstra(setkani1, characterhrac);
+
+
+		characterhrac.hodsekerou(setkani1);
         
        
 

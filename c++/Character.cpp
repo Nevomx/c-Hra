@@ -77,9 +77,10 @@ void Character::zakladniutok(Monster& monster)
 
 void Character::critical(Monster& monster)
 {
-    monster.aktualniZivoty -= utok * 1.80;
+    int damage = utok * 1.80;
+    monster.aktualniZivoty -= damage;
     aktualniMana -= 10;
-    cout << jmeno << " zaútoèil na " << monster.jmeno << " a zpùsobil mu " << utok << " poškození!" << endl;
+    cout << jmeno << " zaútoèil na " << monster.jmeno << " a zpùsobil mu " << damage << " poškození!" << endl;
     
 }
 void Character::zobrazStav()
@@ -93,9 +94,33 @@ void Character::zobrazStav()
     cout << "Zkusenosti: " << zkusenosti << endl;
     cout << "-----------------------------" << endl;
 }
-void Character::hodsekerou()
+void Character::hodsekerou(Monster& monster, Monster* monster1 = nullptr, Monster* monster2 = nullptr)
 {
-	
+    if (aktualniMana >= 15) // Spotøeba many
+    {
+        int damage = utok * 1.5; // Plošné poškození
+        monster.aktualniZivoty -= damage;
+        cout << jmeno << " hodil sekerou na " << monster.jmeno << " a zpùsobil mu " << damage << " poškození!" << endl;
+
+        if (monster1 != nullptr) // Zkontroluje, zda byl pøedán monster1
+        {
+            monster1->aktualniZivoty -= damage;
+            cout << jmeno << " hodil sekerou na " << monster1->jmeno << " a zpùsobil mu " << damage << " poškození!" << endl;
+        }
+
+        if (monster2 != nullptr) // Zkontroluje, zda byl pøedán monster2
+        {
+            monster2->aktualniZivoty -= damage;
+            cout << jmeno << " hodil sekerou na " << monster2->jmeno << " a zpùsobil mu " << damage << " poškození!" << endl;
+        }
+
+        aktualniMana -= 15; // Snížení many
+        cout << "Zbývající mana: " << aktualniMana << endl;
+    }
+    else
+    {
+        cout << "Nemáš dost many na použití schopnosti hod sekerou!" << endl;
+    }
 }
 void Character::provestah(Monster& monster)
 {
@@ -143,6 +168,46 @@ void Character::KonecHry()
 
 
 }
+void Character :: checkpoison()
+{
+    if (poisonTurns> 0)
+    {
+        aktualniZivoty -= 3;
+        poisonTurns--;
+        cout << "Hráè je otrávený! Ztrácí 3 HP. Zbývá " << poisonTurns << " kol otravy.\n";
+    }
+    if (aktualniZivoty <= 0)
+    {
+        KonecHry();
+    }
+}
 
+void Character::heal()
+{
+    int manaCost = 20; 
+    int healAmount = 50; 
+
+    if (aktualniMana >= manaCost) // Kontrola, zda má hráè dostatek many
+    {
+        aktualniMana -= manaCost; // Odeètení many
+        aktualniZivoty += healAmount; // Pøidání životù
+
+        if (aktualniZivoty > maxZivoty) // Zajištìní, že životy nepøekroèí maximum
+        {
+            aktualniZivoty = maxZivoty;
+        }
+
+        cout << jmeno << " se vyléèil o " << healAmount << " životù!" << endl;
+        cout << "Zbývající životy: " << aktualniZivoty << "/" << maxZivoty << endl;
+        cout << "Zbývající mana: " << aktualniMana << "/" << maxMana << endl;
+    }
+    else
+    {
+        cout << "Nemáš dost many na léèení!" << endl;
+    }
+}
+
+
+    
 
     
