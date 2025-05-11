@@ -1,11 +1,13 @@
 #include "Character.h"
 #include "Monster.h"
 #include <iostream>
+#include <random>
 using namespace std;
 
 Character::Character(string jmeno, int vyberclass)
 {
     this->jmeno = jmeno;
+    this->vyberclass = vyberclass;
     switch (vyberclass)
 
     {
@@ -19,6 +21,7 @@ Character::Character(string jmeno, int vyberclass)
         zkusenosti = 0;
         utok = 10;
         Schopnost = 3;
+        
         break;
     case 2:
         maxZivoty = 100;
@@ -45,8 +48,8 @@ Character::Character(string jmeno, int vyberclass)
     case 4:
         maxZivoty = 100;
         aktualniZivoty = 100;
-        maxMana = 50;
-        aktualniMana = 50;
+        maxMana = 100;
+        aktualniMana = 100;
         zlato = 0;
         level = 1;
         zkusenosti = 0;
@@ -81,7 +84,7 @@ void Character::critical(Monster& monster)
     monster.aktualniZivoty -= damage;
     aktualniMana -= 10;
     cout << jmeno << " zaútoèil na " << monster.jmeno << " a zpùsobil mu " << damage << " poškození!" << endl;
-    
+
 }
 void Character::zobrazStav()
 {
@@ -94,7 +97,7 @@ void Character::zobrazStav()
     cout << "Zkusenosti: " << zkusenosti << endl;
     cout << "-----------------------------" << endl;
 }
-void Character::hodsekerou(Monster& monster, Monster* monster1 = nullptr, Monster* monster2 = nullptr)
+void Character::hodsekerou(Monster& monster, Monster* monster1 , Monster* monster2)
 {
     if (aktualniMana >= 15) // Spotøeba many
     {
@@ -113,50 +116,226 @@ void Character::hodsekerou(Monster& monster, Monster* monster1 = nullptr, Monste
             monster2->aktualniZivoty -= damage;
             cout << jmeno << " hodil sekerou na " << monster2->jmeno << " a zpùsobil mu " << damage << " poškození!" << endl;
         }
-
+        
         aktualniMana -= 15; // Snížení many
-        cout << "Zbývající mana: " << aktualniMana << endl;
+        cout << "Zbývající mana: " << this->aktualniMana << endl;
+
+		
     }
     else
     {
         cout << "Nemáš dost many na použití schopnosti hod sekerou!" << endl;
     }
 }
-void Character::provestah(Monster& monster)
+
+void Character::Shield()
+{
+    int manaCost = 15; // Spotøeba many
+    int shieldDuration = 2; // Délka trvání štítu v kolech
+
+    if (aktualniMana >= manaCost) // Kontrola, zda má hráè dostatek many
+    {
+        aktualniMana -= manaCost; // Odeètení many
+        shieldTurns = shieldDuration; // Nastavení trvání štítu
+
+        cout << jmeno << " aktivoval Svatý Štít! Pøíchozí poškození bude sníženo o 50 % na " << shieldDuration << " kola." << endl;
+           
+    }
+    else
+    {
+        cout << "Nemáš dost many na Svatý Štít!" << endl;
+    }
+}
+
+
+
+
+
+
+
+void Character::provestah(Monster& monster, Monster* monster1, Monster* monster2)
 {
     int vyberutoku;
     bool tah = true;
-
-    cout << "vyber si utok\n";
-    cout << "1. Zakladni utok\n";
-    cout << "2. Kriticky utok\n";
-    cout << "4 stav\n";
+    bool dalsiTah = true; // Promìnná pro kontrolu dalšího tahu
+    
 
     while (tah)
     {
-		cin >> vyberutoku;
-        switch (vyberutoku)
+        
+        switch (vyberclass)
         {
         case 1:
-            zakladniutok(monster);
-            tah = false;
+            cout << "Vyber si utok:\n";
+            cout << "1. Zakladni utok\n";
+            cout << "2. Kriticky utok\n";
+            cout << "3. Hod sekerou\n";
+            cout << "4. Heal\n";
+            cout << "5. Zobrazit stav\n";
+            cin >> vyberutoku;
+            switch (vyberutoku)
+            {
+            case 1:
+                zakladniutok(monster);
+                tah = false;
+                break;
+            case 2:
+                critical(monster);
+                tah = false;
+                break;
+            case 3:
+                hodsekerou(monster, monster1, monster2);
+                tah = false;
+                break;
+            case 4:
+                heal();
+                tah = false;
+                break;
+            case 5:
+                zobrazStav();
+            default:
+                cout << "Neplatny utok" << endl;
+                break;
+            }
             break;
+
         case 2:
-            critical(monster);
-            tah = false;
+            cout << "Vyber si utok:\n";
+            cout << "1. Zakladni utok\n";
+            cout << "2. Kriticky utok\n";
+            cout << "3. Svatý štít\n";
+            cout << "4. Heal\n";
+            cout << "5. Zobrazit stav\n";
+            cin >> vyberutoku;
+            switch (vyberutoku)
+            {
+            case 1:
+                zakladniutok(monster);
+                tah = false;
+                break;
+            case 2:
+                critical(monster);
+                tah = false;
+                break;
+            case 3:
+                Shield();
+                tah = false;
+                break;
+            case 4:
+                heal();
+                tah = false;
+                break;
+            case 5:
+                zobrazStav();
+            default:
+                cout << "Neplatny utok" << endl;
+                break;
+            }
             break;
+            
+
         case 3:
-            // Místo pro další logiku
+            
+            while (dalsiTah) // Cyklus pro Assassinovy tahy
+            {
+                cout << "Vyber si utok:\n";
+                cout << "1. Zakladni utok\n";
+                cout << "2. Kriticky utok\n";
+                cout << "3. Heal\n";
+                cout << "4. Zobrazit stav\n";
+                cin >> vyberutoku;
+
+                switch (vyberutoku)
+                {
+                case 1:
+                    zakladniutok(monster);
+
+                    break;
+                case 2:
+                    critical(monster);
+                    break;
+                case 3:
+                    heal();
+                    break;
+                case 4:
+                    zobrazStav();
+                    break;
+                default:
+                    cout << "Neplatny utok" << endl;
+                    break;
+                  
+                }
+
+                // Pasivní šance na další tah pro Assassina
+                random_device rd;
+                mt19937 gen(rd());
+                uniform_int_distribution<> distrib(1, 100); // Rozsah 1-100
+
+                int chance = distrib(gen); // Generování náhodného èísla
+                if (chance <= 20) // šance na další tah
+                {
+                    cout << jmeno << " má šanci na další tah!" << endl;
+                    continue; // Umožní hráèi znovu si vybrat akci
+                }
+                else
+                {
+                    // Pokud šance nevyjde, ukonèí cyklus
+                    dalsiTah = false;
+                    tah = false;
+                }
+
+               
+            }
             break;
+            
+           
+            
+
         case 4:
-            zobrazStav();
+            cout << "Vyber si utok:\n";
+            cout << "1. Zakladni utok\n";
+            cout << "2. Kriticky utok\n";
+            cout << "3. Užití vlastního produktu(boost na zlato a xp za 50many)\n";
+            cout << "3. Heal\n";
+            cout << "4. Zobrazit stav\n";
+            cin >> vyberutoku;
+            switch (vyberutoku)
+            {
+            case 1:
+                zakladniutok(monster);
+                tah = false;
+                break;
+            case 2:
+                critical(monster);
+                tah = false;
+                break;
+            case 3:
+                aktivujBonus();
+                tah = false;
+                break;
+            case 4:
+                heal();
+                tah = false;
+                break;
+            case 5:
+                zobrazStav();
+            default:
+                cout << "Neplatny utok" << endl;
+                break;
+                
+            }
             break;
+
         default:
-            cout << "neplatny utok" << endl;
+            cout << "Neplatna trida postavy.\n";
+            tah = false;
             break;
         }
+        
     }
+    
 }
+
 void Character::KonecHry()
 {
     if  (aktualniZivoty <= 0)
@@ -165,8 +344,22 @@ void Character::KonecHry()
         cout << "Konec hry" << endl;
         exit(0);
     }
+}
+void Character::aktivujBonus()
+{
+    int manaCost = 75; // Cena za aktivaci bonusu
 
-
+    if (aktualniMana >= manaCost) // Kontrola, zda má hráè dostatek many
+    {
+        aktualniMana -= manaCost; // Odeètení many
+        Schopnost = 1; // Nastavení bonusu (1 = aktivní)
+        cout << jmeno << " aktivoval bonus na zdvojnásobení pøíjmu XP a zlata!" << endl;
+        cout << "Zbývající mana: " << aktualniMana << "/" << maxMana << endl;
+    }
+    else
+    {
+        cout << "Nemáš dost many na aktivaci bonusu!" << endl;
+    }
 }
 void Character :: checkpoison()
 {

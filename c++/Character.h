@@ -19,14 +19,20 @@ public:
     float utok;
     int Schopnost;
     int poisonTurns = 0;
+    int vyberclass;
+    int shieldTurns = 0;
+    
 
     Character(string jmeno, int vyberclass);
     void zakladniutok(Monster& monster);
 	void critical(Monster& monster);
 	void zobrazStav();
-	void hodsekerou(Monster & monster);
-	void provestah(Monster& monster);
+    void hodsekerou(Monster& monster, Monster* monster1 = nullptr, Monster* monster2 = nullptr);
+    void Shield();
+	void provestah(Monster& monster, Monster* monster1 = nullptr, Monster* monster2 = nullptr);
     void checkpoison();
     void KonecHry();
     void heal();
+    void aktivujBonus();
+    
 };
