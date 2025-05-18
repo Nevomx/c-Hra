@@ -1,6 +1,7 @@
 #include "Monster.h"
 #include "Character.h"
 #include <iostream>
+#include <random>
 using namespace std;
 
 Monster::Monster(int monster)
@@ -55,5 +56,30 @@ void Monster::poisonarrow(Character& characterhrac, int kolo)
     else
     {
         cout << "nefunguje ty curaku";
+    }
+}
+void Monster::chickenAttack(Character& characterhrac)
+{
+    if (jmeno == "chicken jockey") // Pouze pro chicken jockey
+    {
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<> distrib(1, 100); // Rozsah 1-100
+
+        int chance = distrib(gen); // Generování náhodného èísla
+        if (chance <= 50) // 25% šance, že slepice zaútoèí
+        {
+            cout << "Slepice z chicken jockey zaútoèila na " << characterhrac.jmeno << " a zpùsobila mu 2 poškození!" << endl;
+            characterhrac.aktualniZivoty -= 2; // Snížení životù hráèe o 2
+            cout << characterhrac.jmeno << " má teï " << characterhrac.aktualniZivoty << " životù." << endl;
+        }
+        else
+        {
+            cout << "Slepice z chicken jockey se rozhodla nezaútoèit." << endl;
+        }
+    }
+    else
+    {
+        cout << "Tento útok není dostupný pro toto monstrum." << endl;
     }
 }
