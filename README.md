@@ -9,3 +9,6 @@ vytvoreni 3 novych funkci 1 encounter s monstrem hotov. cil je mit nejcisitsi ma
 
 5.4
 vytvoreni 2 funkkci jako je heal a hod sekerou ktera dela area damage
+
+25.5
+Nove jsou dve funkce. 1 je funkce na vesnicei kde si hrac muze za zlataky nakoupit doplneni zivoty a many a navic si muze koupit i vetsi poskozeni. 2 je predpripraveni fukce na podbrobny vypis, co jaka classa dela.
