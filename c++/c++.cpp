@@ -14,6 +14,7 @@ using std::endl;
 
 
 
+
 void porazenimonstra(Monster& setkani1, Character& characterhrac)
 {
     if (setkani1.aktualniZivoty <= 0)
@@ -63,6 +64,39 @@ void porazenimonstra(Monster& setkani1, Character& characterhrac)
     }
 }
 
+void vypisClassInfo()
+{
+    cout << "\n--- útok ---\n";
+    cout << "Všechny classy mají na výběr 4 možnosti tahu\n";
+    cout << "1. Záklandí útok\n";
+    cout << "2. Kritický útok\n";
+    cout << "3. Speciální schponost\n";
+    cout << "4.Heal\n";
+    cout << "----------------- class -----------------------";
+    cout << endl << "1. Berserker\n";
+    cout << "   Útok: \n";
+    cout << "   Maximální životy: \n";
+    cout << "   Maximálná mana: \n";
+    cout << "   Speciální schopnost je area damage do všech monster. S základním poškozením x 50%. Cena je 15 many.\n\n";
+    cout << "2. Paladin\n";
+    cout << "   Útok: \n";
+    cout << "   Maximální životy: \n";
+    cout << "   Maximálná mana: \n";
+    cout << "   Speciální schopnost je posvátný štít, který redukuje příchozí poškození o 50% po dobu 2 kol za cenu 15 many. \n\n";
+    cout << "3. Assassin\n";
+    cout << "   Útok: \n";
+    cout << "   Maximální životy: \n";
+    cout << "   Maximálná mana: \n";
+    cout << "   Speciální schponost je pasivnka, která má 20% šanci na aktivaci a udělá to ,že má hráč tah navíc. \n\n";
+    cout << "4. Walter Bílý\n";
+    cout << "   Útok: \n";
+    cout << "   Maximální životy: \n";
+    cout << "   Maximálná mana: \n";
+    cout << "   Speciálí schopnost je užití vlastního produktu, který dá bonus na 2x větší příjem zlata a xp za cenu 75 many. Bonus bude aktivní dokud hráč nedojde do vesnice.\n\n ";
+
+
+
+}
 
 
 
@@ -104,8 +138,15 @@ int main()
         cout << "2. Paladin - Vyvážený, s bonusem na obranu\n";
         cout << "3. Assassin - Šance na dvojitý tah\n";
         cout << "4. Walter Bílý - Podnikatel\n";
+        cout << "5. Zobrazit podrobné informace o třídách\n";
         cout << "Zadej číslo class: ";
 		cin >> vyberclass;
+        if (vyberclass == 5)
+        {
+            vypisClassInfo();
+             // Znovu se zeptá na výběr třídy
+            continue;
+        }
 		cout << "Potvrdit výběr? (1 - ano, 0 - ne): ";
 		cin >> potvrzeniclass;
 		if (potvrzeniclass == 1)

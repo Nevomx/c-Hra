@@ -400,7 +400,71 @@ void Character::heal()
     }
 }
 
+void Character::navstivVesnici()
+{
+    int volba;
+    bool veVesnici = true;
+    while (veVesnici)
+    {
+        cout << "\n--- Vesnice ---\n";
+        cout << "Tve zlato: " << zlato << endl;
+        cout << "1. Koupit 50 zivotu (cena: 20 zlata)\n";
+        cout << "2. doplnit manu (cena: 15 zlata)\n";
+        cout << "3. Koupit posilovac utoku (+5 damage, cena: 50 zlata)\n";
+        cout << "4. Odejit z vesnice\n";
+        cout << "Vyber akci: ";
+        cin >> volba;
 
+        switch (volba)
+        {
+        case 1:
+            if (zlato >= 20)
+            {
+                aktualniZivoty += 50;
+                if (aktualniZivoty > maxZivoty) aktualniZivoty = maxZivoty;
+                zlato -= 20;
+                cout << "Koupil jsi 50 životù. Aktualná životy: " << aktualniZivoty << endl;
+            }
+            else
+            {
+                cout << "Nemáš dost zlata!" << endl;
+            }
+            break;
+        case 2:
+            if (zlato >= 15)
+            {
+                aktualniMana += 1000;
+                if (aktualniMana > maxMana) aktualniMana = maxMana;
+                zlato -= 15;
+                cout << "máš " << aktualniMana <<" ze "<< maxMana << " many" <<  endl;
+            }
+            else
+            {
+                cout << "Nemáš dost zlata!" << endl;
+            }
+            break;
+        case 3:
+            if (zlato >= 50)
+            {
+                utok += 5;
+                zlato -= 50;
+                cout << "Koupil jsi posilovac utoku! Aktualni utok: " << utok << endl;
+            }
+            else
+            {
+                cout << "Nemáš dost zlata!" << endl;
+            }
+            break;
+        case 4:
+            veVesnici = false;
+            cout << "Odchazis z vesnice.\n";
+            break;
+        default:
+            cout << "Neplatna volba!" << endl;
+            break;
+        }
+    }
+}
     
 
     
