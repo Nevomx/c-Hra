@@ -399,7 +399,7 @@ void Character::heal()
         cout << "Nemáš dost many na léèení!" << endl;
     }
 }
-
+//switch
 void Character::navstivVesnici()
 {
     int volba;
