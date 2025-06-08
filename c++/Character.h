@@ -35,5 +35,6 @@ public:
     void heal();
     void aktivujBonus();
     void navstivVesnici();
+    void levelUp();
 
 };

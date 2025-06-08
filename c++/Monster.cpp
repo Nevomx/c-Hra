@@ -26,6 +26,13 @@ Monster::Monster(int monster)
         aktualniZivoty = 50;
         utok = 15;
         break;
+    case 4:
+        jmeno = "Miniboss";
+        maxZivoty = 150;
+        aktualniZivoty = 150;
+        utok = 20;
+        break;
+
     }
 }
 

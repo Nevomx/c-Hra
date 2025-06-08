@@ -402,8 +402,16 @@ void Character::heal()
 //switch
 void Character::navstivVesnici()
 {
+    
     int volba;
     bool veVesnici = true;
+
+
+    if (Schopnost == 1)
+    {
+        Schopnost = 0;
+        cout << "deaktivoval se bonus\n\n";
+    }
     while (veVesnici)
     {
         cout << "\n--- Vesnice ---\n";
@@ -465,6 +473,21 @@ void Character::navstivVesnici()
         }
     }
 }
-    
+
+void Character::levelUp()
+{
+    while (zkusenosti >= 100)
+    {
+        level++;
+        zkusenosti -= 100;
+        maxZivoty += 20;
+        maxMana += 10;
+        utok += 2;
+        aktualniZivoty = maxZivoty;
+        aktualniMana = maxMana;
+        cout << "LEVEL UP! " << jmeno << " je nyní na úrovni " << level << "!" << endl;
+        cout << "Maximální životy: " << maxZivoty << ", maximální mana: " << maxMana << ", útok: " << utok << endl;
+    }
+}
 
     

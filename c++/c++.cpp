@@ -93,6 +93,7 @@ void vypisClassInfo()
     cout << "   Maximální životy: \n";
     cout << "   Maximálná mana: \n";
     cout << "   Speciálí schopnost je užití vlastního produktu, který dá bonus na 2x větší příjem zlata a xp za cenu 75 many. Bonus bude aktivní dokud hráč nedojde do vesnice.\n\n ";
+    cout << "Ve vesnici můžeš doplnit životy, manu a případně i koupit item, který zvětší poškození proti monstrům.\n";
 
 
 
