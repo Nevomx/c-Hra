@@ -12,10 +12,10 @@ Character::Character(string jmeno, int vyberclass)
 
     {
     case 1:
-        maxZivoty = 300;
-        aktualniZivoty = 300;
-        maxMana = 150;
-        aktualniMana = 50;
+        maxZivoty = 100;
+        aktualniZivoty = 100;
+        maxMana = 100;
+        aktualniMana = 100;
         zlato = 0;
         level = 1;
         zkusenosti = 0;
@@ -26,8 +26,8 @@ Character::Character(string jmeno, int vyberclass)
     case 2:
         maxZivoty = 100;
         aktualniZivoty = 100;
-        maxMana = 50;
-        aktualniMana = 50;
+        maxMana = 100;
+        aktualniMana = 100;
         zlato = 0;
         level = 1;
         zkusenosti = 0;
@@ -71,19 +71,43 @@ void Character::zakladniutok(Monster& monster)
     {
         cout << monster.jmeno << " byl poražen!" << endl;
         monster.aktualniZivoty = 0;
+        porazeni = true;
     }
     else
     {
         cout << monster.jmeno << " má teï " << monster.aktualniZivoty << " životù." << endl;
     }
+    tahproveden = true;
+
 }
 
 void Character::critical(Monster& monster)
 {
     int damage = utok * 1.80;
-    monster.aktualniZivoty -= damage;
-    aktualniMana -= 10;
-    cout << jmeno << " zaútoèil na " << monster.jmeno << " a zpùsobil mu " << damage << " poškození!" << endl;
+
+    if (aktualniMana >= 10)
+    {
+        monster.aktualniZivoty -= damage;
+        aktualniMana -= 10;
+        cout << jmeno << " zaútoèil na " << monster.jmeno << " a zpùsobil mu " << damage << " poškození!" << endl;
+        cout << jmeno << " má " << aktualniMana << "/" << maxMana << " Many\n";
+    }
+    else
+    {
+        cout << "nemas dostatek many \n";
+    }
+    
+    if (monster.aktualniZivoty <= 0)
+    {
+        cout << monster.jmeno << " byl poražen!" << endl;
+        monster.aktualniZivoty = 0;
+        porazeni = true;
+    }
+    else
+    {
+        cout << monster.jmeno << " má teï " << monster.aktualniZivoty << " životù." << endl;
+    }
+    tahproveden = true;
 
 }
 void Character::zobrazStav()
@@ -104,21 +128,26 @@ void Character::hodsekerou(Monster& monster, Monster* monster1 , Monster* monste
         int damage = utok * 1.5; // Plošné poškození
         monster.aktualniZivoty -= damage;
         cout << jmeno << " hodil sekerou na " << monster.jmeno << " a zpùsobil mu " << damage << " poškození!" << endl;
+        cout << monster.jmeno << " má teï " << monster.aktualniZivoty << " životù." << endl;
+       
 
         if (monster1 != nullptr) // Zkontroluje, zda byl pøedán monster1
         {
             monster1->aktualniZivoty -= damage;
             cout << jmeno << " hodil sekerou na " << monster1->jmeno << " a zpùsobil mu " << damage << " poškození!" << endl;
+            cout << monster.jmeno << " má teï " << monster.aktualniZivoty << " životù." << endl;
         }
 
         if (monster2 != nullptr) // Zkontroluje, zda byl pøedán monster2
         {
             monster2->aktualniZivoty -= damage;
             cout << jmeno << " hodil sekerou na " << monster2->jmeno << " a zpùsobil mu " << damage << " poškození!" << endl;
+            cout << monster.jmeno << " má teï " << monster.aktualniZivoty << " životù." << endl;
         }
         
         aktualniMana -= 15; // Snížení many
         cout << "Zbývající mana: " << this->aktualniMana << endl;
+        tahproveden = true;
 
 		
     }
@@ -130,8 +159,8 @@ void Character::hodsekerou(Monster& monster, Monster* monster1 , Monster* monste
 
 void Character::Shield()
 {
-    int manaCost = 15; // Spotøeba many
-    int shieldDuration = 2; // Délka trvání štítu v kolech
+    int manaCost = 10; // Spotøeba many
+    int shieldDuration = 3; // Délka trvání štítu v kolech
 
     if (aktualniMana >= manaCost) // Kontrola, zda má hráè dostatek many
     {
@@ -139,6 +168,7 @@ void Character::Shield()
         shieldTurns = shieldDuration; // Nastavení trvání štítu
 
         cout << jmeno << " aktivoval Svatý Štít! Pøíchozí poškození bude sníženo o 50 % na " << shieldDuration << " kola." << endl;
+        tahproveden = true;
            
     }
     else
@@ -168,9 +198,9 @@ void Character::provestah(Monster& monster, Monster* monster1, Monster* monster2
         case 1:
             cout << "Vyber si utok:\n";
             cout << "1. Zakladni utok\n";
-            cout << "2. Kriticky utok\n";
-            cout << "3. Hod sekerou\n";
-            cout << "4. Heal\n";
+            cout << "2. Kriticky utok (10 mana)\n";
+            cout << "3. Hod sekerou (15 mana)\n";
+            cout << "4. Heal (20 mana)\n";
             cout << "5. Zobrazit stav\n";
             cin >> vyberutoku;
             switch (vyberutoku)
@@ -178,14 +208,17 @@ void Character::provestah(Monster& monster, Monster* monster1, Monster* monster2
             case 1:
                 zakladniutok(monster);
                 tah = false;
+                
                 break;
             case 2:
                 critical(monster);
                 tah = false;
+                
                 break;
             case 3:
                 hodsekerou(monster, monster1, monster2);
                 tah = false;
+                
                 break;
             case 4:
                 heal();
@@ -202,9 +235,9 @@ void Character::provestah(Monster& monster, Monster* monster1, Monster* monster2
         case 2:
             cout << "Vyber si utok:\n";
             cout << "1. Zakladni utok\n";
-            cout << "2. Kriticky utok\n";
-            cout << "3. Svatý štít\n";
-            cout << "4. Heal\n";
+            cout << "2. Kriticky utok (10 mana)\n";
+            cout << "3. Svatý štít (10 mana)\n";
+            cout << "4. Heal (20 mana)\n";
             cout << "5. Zobrazit stav\n";
             cin >> vyberutoku;
             switch (vyberutoku)
@@ -240,8 +273,8 @@ void Character::provestah(Monster& monster, Monster* monster1, Monster* monster2
             {
                 cout << "Vyber si utok:\n";
                 cout << "1. Zakladni utok\n";
-                cout << "2. Kriticky utok\n";
-                cout << "3. Heal\n";
+                cout << "2. Kriticky utok (10 mana)\n";
+                cout << "3. Heal (20 manaú\n";
                 cout << "4. Zobrazit stav\n";
                 cin >> vyberutoku;
 
@@ -294,10 +327,10 @@ void Character::provestah(Monster& monster, Monster* monster1, Monster* monster2
         case 4:
             cout << "Vyber si utok:\n";
             cout << "1. Zakladni utok\n";
-            cout << "2. Kriticky utok\n";
-            cout << "3. Užití vlastního produktu(boost na zlato a xp za 50many)\n";
-            cout << "3. Heal\n";
-            cout << "4. Zobrazit stav\n";
+            cout << "2. Kriticky utok (10 mana)\n";
+            cout << "3. Užití vlastního produktu(boost na zlato a xp za 75many)\n";
+            cout << "4. Heal (20 mana)\n";
+            cout << "5. Zobrazit stav\n";
             cin >> vyberutoku;
             switch (vyberutoku)
             {
@@ -355,6 +388,7 @@ void Character::aktivujBonus()
         Schopnost = 1; // Nastavení bonusu (1 = aktivní)
         cout << jmeno << " aktivoval bonus na zdvojnásobení pøíjmu XP a zlata!" << endl;
         cout << "Zbývající mana: " << aktualniMana << "/" << maxMana << endl;
+        tahproveden = true;
     }
     else
     {
@@ -368,6 +402,7 @@ void Character :: checkpoison()
         aktualniZivoty -= 3;
         poisonTurns--;
         cout << "Hráè je otrávený! Ztrácí 3 HP. Zbývá " << poisonTurns << " kol otravy.\n";
+        cout << "Máš " << aktualniZivoty << "/" << maxZivoty << " HP\n\n";
     }
     if (aktualniZivoty <= 0)
     {
@@ -393,6 +428,7 @@ void Character::heal()
         cout << jmeno << " se vyléèil o " << healAmount << " životù!" << endl;
         cout << "Zbývající životy: " << aktualniZivoty << "/" << maxZivoty << endl;
         cout << "Zbývající mana: " << aktualniMana << "/" << maxMana << endl;
+        tahproveden = true;
     }
     else
     {
@@ -416,9 +452,9 @@ void Character::navstivVesnici()
     {
         cout << "\n--- Vesnice ---\n";
         cout << "Tve zlato: " << zlato << endl;
-        cout << "1. Koupit 50 zivotu (cena: 20 zlata)\n";
-        cout << "2. doplnit manu (cena: 15 zlata)\n";
-        cout << "3. Koupit posilovac utoku (+5 damage, cena: 50 zlata)\n";
+        cout << "1. dopnit zivoty (cena: 3 zlata)\n";
+        cout << "2. doplnit manu (cena: 4 zlata)\n";
+        cout << "3. Koupit posilovac utoku (+5 damage, cena: 8 zlata)\n";
         cout << "4. Odejit z vesnice\n";
         cout << "Vyber akci: ";
         cin >> volba;
@@ -426,12 +462,12 @@ void Character::navstivVesnici()
         switch (volba)
         {
         case 1:
-            if (zlato >= 20)
+            if (zlato >= 3)
             {
-                aktualniZivoty += 50;
+                aktualniZivoty += 1000;
                 if (aktualniZivoty > maxZivoty) aktualniZivoty = maxZivoty;
-                zlato -= 20;
-                cout << "Koupil jsi 50 životù. Aktualná životy: " << aktualniZivoty << endl;
+                zlato -= 3;
+                cout << "dopnil jsi zivoty. Aktualní životy : " << aktualniZivoty << endl;
             }
             else
             {
@@ -439,11 +475,11 @@ void Character::navstivVesnici()
             }
             break;
         case 2:
-            if (zlato >= 15)
+            if (zlato >= 4)
             {
                 aktualniMana += 1000;
                 if (aktualniMana > maxMana) aktualniMana = maxMana;
-                zlato -= 15;
+                zlato -= 4;
                 cout << "máš " << aktualniMana <<" ze "<< maxMana << " many" <<  endl;
             }
             else
@@ -452,10 +488,10 @@ void Character::navstivVesnici()
             }
             break;
         case 3:
-            if (zlato >= 50)
+            if (zlato >= 8)
             {
                 utok += 5;
-                zlato -= 50;
+                zlato -= 8;
                 cout << "Koupil jsi posilovac utoku! Aktualni utok: " << utok << endl;
             }
             else
@@ -465,7 +501,7 @@ void Character::navstivVesnici()
             break;
         case 4:
             veVesnici = false;
-            cout << "Odchazis z vesnice.\n";
+            cout << "Odchazis z vesnice.\n\n";
             break;
         default:
             cout << "Neplatna volba!" << endl;
@@ -483,10 +519,10 @@ void Character::levelUp()
         maxZivoty += 20;
         maxMana += 10;
         utok += 2;
-        aktualniZivoty = maxZivoty;
-        aktualniMana = maxMana;
+        aktualniZivoty = 20;
+        aktualniMana = 10;
         cout << "LEVEL UP! " << jmeno << " je nyní na úrovni " << level << "!" << endl;
-        cout << "Maximální životy: " << maxZivoty << ", maximální mana: " << maxMana << ", útok: " << utok << endl;
+        cout << "Maximální životy: " << maxZivoty << ", maximální mana: " << maxMana << ", útok: " << utok << endl << endl;
     }
 }
 

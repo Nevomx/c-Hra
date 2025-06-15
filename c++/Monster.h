@@ -16,7 +16,8 @@ public:
     Monster(int monster);
 
     void attack(Character& characterhrac);
-    void poisonarrow(Character& characterhrac, int kolo);
+    void poisonarrow(Character& characterhrac);
     void chickenAttack(Character& characterhrac);
-    
+    void encouter(Character& characterhrac);
+    void BossFight(Character& characterhrac);
 };

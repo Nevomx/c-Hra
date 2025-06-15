@@ -21,6 +21,9 @@ public:
     int poisonTurns = 0;
     int vyberclass;
     int shieldTurns = 0;
+    bool vyruseniUtoku = false;
+    bool tahproveden = false;
+    bool porazeni = false;
 
 
     Character(string jmeno, int vyberclass);
